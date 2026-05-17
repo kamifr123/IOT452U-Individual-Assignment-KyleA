@@ -6,3 +6,26 @@ Built for the IOT452U Software Engineering Tools and Techniques module.
 ## GitHub Repository
 
 https://github.qmul.ac.uk/YOUR-USERNAME/IOT452U-Individual-Assignment
+
+## System Structure
+digital_id_system/
+├── models/
+│   └── digital_id.py          # DigitalID entity and IDStatus enum
+├── services/
+│   ├── identity_manager.py    # Identity creation, updates, status changes
+│   └── identity_consumer.py   # Verification and lookup for organisations
+├── auth/
+│   └── authorisation.py       # Organisation types and permission enforcement
+├── audit/
+│   └── audit_log.py           # In-memory log of all key system actions
+├── tests/
+│   ├── test_identity_manager.py
+│   └── test_identity_consumer.py
+├── main.py                    # Console demo covering all key scenarios
+└── .github/workflows/ci.yml   # GitHub Actions CI configuration
+
+### Digital ID Model
+Each Digital ID has immutable attributes (`national_id`, `date_of_birth`) that cannot
+be changed after creation, and mutable attributes (`name`, `address`, `email`) that
+the central authority may update. Status transitions (ACTIVE, SUSPENDED, REVOKED)
+are validated and deterministic.
