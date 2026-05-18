@@ -37,3 +37,11 @@ are validated and deterministic.
 Identity creation, attribute updates, and status changes are restricted exclusively
 to the central authority. All operations are validated before execution and recorded
 in the audit log. Revoked identities cannot be updated or reactivated.
+
+### Identity Consumption
+Verification and lookup are handled separately from management, enforcing the distinct
+capability boundary required by the system. Three verification types are supported:
+
+- Basic (employers, banks): returns valid/not valid only, no additional attributes exposed
+- Tax authority: confirms identity is active and was not suspended during a reporting period
+- Driving licence: confirms identity is active and has no temporary restriction in place
