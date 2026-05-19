@@ -5,78 +5,85 @@ Built for the IOT452U Software Engineering Tools and Techniques module.
 
 ## GitHub Repository
 
-https://github.qmul.ac.uk/YOUR-USERNAME/IOT452U-Individual-Assignment
+Public: https://github.com/kamifr123/IOT452U-Individual-Assignment-KyleA
+Private QMUL: https://github.qmul.ac.uk/ec25720/IOT452U-Individual-Assignment.git
 
-## System Structure
+> Important: The QMUL GitHub runner did not work for this submission, so CI validation is performed on the public repository using a public GitHub Actions PR runner.
+
+## Assessment Context
+
+This project is the final individual coursework for IOT452U. It focuses on:
+- Digital ID lifecycle management and consumption
+- Clear architecture and separation of responsibilities
+- Automated unit testing and continuous integration
+- Traceable development through version control
+
+## Repository Structure
 
 ```
-digital_id_system/
-├── models/
-│   └── digital_id.py          # DigitalID entity and IDStatus enum
-├── services/
-│   ├── identity_manager.py    # Identity creation, updates, status changes
-│   └── identity_consumer.py   # Verification and lookup for organisations
-├── auth/
-│   └── authorisation.py       # Organisation types and permission enforcement
+.
 ├── audit/
-│   └── audit_log.py           # In-memory log of all key system actions
+│   └── audit_log.py
+├── auth/
+│   └── authorisation.py
+├── models/
+│   └── digital_id.py
+├── services/
+│   ├── identity_consumer.py
+│   └── identity_manager.py
 ├── tests/
-│   ├── test_identity_manager.py
-│   └── test_identity_consumer.py
-├── main.py                    # Console demo covering all key scenarios
-└── .github/workflows/ci.yml   # GitHub Actions CI configuration
+│   ├── test_identity_consumer.py
+│   └── test_identity_manager.py
+├── conftest.py
+├── main.py
+└── .github/workflows/ci.yml
 ```
 
-### Digital ID Model
-Each Digital ID has immutable attributes (`national_id`, `date_of_birth`) that cannot
-be changed after creation, and mutable attributes (`name`, `address`, `email`) that
-the central authority may update. Status transitions (ACTIVE, SUSPENDED, REVOKED)
-are validated and deterministic.
+## System Overview
 
-### Identity Management
-Identity creation, attribute updates, and status changes are restricted exclusively
-to the central authority. All operations are validated before execution and recorded
-in the audit log. Revoked identities cannot be updated or reactivated.
+- `models/digital_id.py`: DigitalID entity, immutable field rules, and status enum.
+- `services/identity_manager.py`: creation, update, and status change operations for the central authority.
+- `services/identity_consumer.py`: verification and lookup logic for authorised consumers.
+- `auth/authorisation.py`: role-based access enforcement for management and consumption.
+- `audit/audit_log.py`: in-memory audit trail for core operations.
+- `main.py`: console demo showing core workflows and example behaviour.
+- `conftest.py`: configures `PYTHONPATH` for tests and CI imports.
 
-### Identity Consumption
-Verification and lookup are handled separately from management, enforcing the distinct
-capability boundary required by the system. Three verification types are supported:
+## Key Behaviour
 
-- Basic (employers, banks): returns valid/not valid only, no additional attributes exposed
-- Tax authority: confirms identity is active and was not suspended during a reporting period
-- Driving licence: confirms identity is active and has no temporary restriction in place
+- Central authority only can create IDs, update permitted fields, and change status.
+- Consumers perform verification and lookup separately from management.
+- Immutable fields such as `national_id` and `date_of_birth` cannot be changed after creation.
+- Revoked identities cannot be updated or reactivated.
+- Operations behave deterministically and handle repeated requests consistently.
 
-## Running the Tests
+## Running the System
 
+```bash
+python3 main.py
+```
+
+## Running Tests
+
+```bash
 pip3 install pytest
 pytest tests/ -v
+```
 
-33 unit tests cover identity creation, duplicate rejection, immutable field enforcement,
-status transitions, idempotency, authorisation enforcement, and all three verification types.
+The test suite covers identity creation, duplicate handling, immutable field enforcement, status transitions, idempotency, authorisation rules, and multiple verification scenarios.
 
 ## Continuous Integration
 
-GitHub Actions is configured to automatically run all tests on every push.
-See .github/workflows/ci.yml. CI status is visible in the Actions tab of the repository.
+The GitHub Actions workflow at `.github/workflows/ci.yml` installs Python 3.11, installs `pytest`, and runs `pytest tests/ -v`.
+The workflow is triggered on push and pull request events.
 
-### Public Repository Setup
+## Public CI Runner Note
 
-To enable CI/CD testing while maintaining a private institutional repository:
+The QMUL GitHub runner could not be used successfully for this submission. CI is therefore validated using the public repository and a public GitHub Actions runner.
 
-1. **Dual Remote Configuration**: Two remotes are configured:
-   - `origin`: QMUL GitHub (private) - `https://github.qmul.ac.uk/ec25720/IOT452U-Individual-Assignment.git`
-   - `public`: GitHub public (public) - `https://github.com/kamifr123/IOT452U-Individual-Assignment-KyleA.git`
+## Design Decisions
 
-2. **Syncing Changes**: Push feature branches to `origin` for development, then merge to `main` and push to both remotes:
-   ```bash
-   git push origin feature/branch-name
-   # After PR approval:
-   git checkout main
-   git merge feature/branch-name
-   git push origin main
-   git push public main
-   ```
-
-3. **CI Configuration**: GitHub Actions runs on the public repository, automatically testing all commits.
-
-4. **Import Path Fix**: A `conftest.py` file ensures Python imports work correctly in the CI environment by adding the project root to `sys.path`.
+- Management and consumption are separated into distinct services, matching the assessment requirement that these are distinct capabilities.
+- Authorisation is centralised for consistent permission enforcement.
+- The project uses an in-memory model to keep the system focused on behaviour and structure rather than infrastructure.
+- The code is structured to make system behaviour clear through readable implementation and automated tests.
