@@ -54,3 +54,7 @@ pytest tests/ -v
 33 unit tests cover identity creation, duplicate rejection, immutable field enforcement,
 status transitions, idempotency, authorisation enforcement, and all three verification types.
 
+## Continuous Integration
+
+GitHub Actions is configured to automatically run all tests on every push.
+See .github/workflows/ci.yml. CI status is visible in the Actions tab of the repository.
