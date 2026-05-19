@@ -33,9 +33,9 @@ def manager_with_active_id(manager):
     return manager
 
 
-# ------------------------------------------------------------------ #
+
 # Creation
-# ------------------------------------------------------------------ #
+
 
 class TestCreateIdentity:
     def test_create_valid_identity_succeeds(self, manager):
@@ -73,9 +73,9 @@ class TestCreateIdentity:
         assert entries[0]["action"] == "IDENTITY_CREATED"
 
 
-# ------------------------------------------------------------------ #
+
 # Updates
-# ------------------------------------------------------------------ #
+
 
 class TestUpdateIdentity:
     def test_update_mutable_attribute_succeeds(self, manager_with_active_id):
@@ -107,9 +107,9 @@ class TestUpdateIdentity:
             manager.update_identity(CA, "GB-999", "name", "Ghost")
 
 
-# ------------------------------------------------------------------ #
+
 # Status management
-# ------------------------------------------------------------------ #
+
 
 class TestStatusManagement:
     def test_suspend_active_identity(self, manager_with_active_id):

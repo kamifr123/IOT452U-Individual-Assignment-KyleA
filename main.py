@@ -29,17 +29,16 @@ def section(title: str) -> None:
 
 
 def main():
-    # ------------------------------------------------------------------ #
     # Setup — shared audit log, manager, consumer
-    # ------------------------------------------------------------------ #
+
     audit_log = AuditLog()
     manager = IdentityManager(audit_log)
     consumer = IdentityConsumer(manager, audit_log)
     ca = OrganisationType.CENTRAL_AUTHORITY
 
-    # ------------------------------------------------------------------ #
+    
     # 1. Creating Digital IDs
-    # ------------------------------------------------------------------ #
+    
     section("1. Creating Digital IDs")
 
     id1 = manager.create_identity(
@@ -69,9 +68,9 @@ def main():
     except DuplicateIdentityError as e:
         print(f"  REJECTED: {e}")
 
-    # ------------------------------------------------------------------ #
+    
     # 2. Updating mutable attributes
-    # ------------------------------------------------------------------ #
+    
     section("2. Updating Mutable Attributes")
 
     manager.update_identity(ca, "GB-001", "address", "22 New Road, Birmingham")
@@ -84,9 +83,9 @@ def main():
     except AttributeError as e:
         print(f"  REJECTED: {e}")
 
-    # ------------------------------------------------------------------ #
+    
     # 3. Status lifecycle
-    # ------------------------------------------------------------------ #
+    
     section("3. Status Lifecycle")
 
     manager.change_status(ca, "GB-001", IDStatus.SUSPENDED)
@@ -117,9 +116,9 @@ def main():
     except PermissionError as e:
         print(f"  REJECTED: {e}")
 
-    # ------------------------------------------------------------------ #
+    
     # 4. Authorisation enforcement
-    # ------------------------------------------------------------------ #
+    
     section("4. Authorisation Enforcement")
 
     print("  Bank attempting to create an identity:")
@@ -139,9 +138,9 @@ def main():
     except AuthorisationError as e:
         print(f"  REJECTED: {e}")
 
-    # ------------------------------------------------------------------ #
+    
     # 5. Consuming organisation verifications
-    # ------------------------------------------------------------------ #
+    
     section("5. Identity Verification by Consuming Organisations")
 
     # Basic verification (employer) — active ID
@@ -193,9 +192,9 @@ def main():
     )
     print(f"  Driving licence GB-001 (restriction): {result}")
 
-    # ------------------------------------------------------------------ #
+    
     # 6. Audit log
-    # ------------------------------------------------------------------ #
+    
     section("6. Audit Log")
     audit_log.display()
 
