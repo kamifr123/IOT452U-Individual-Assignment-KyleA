@@ -29,9 +29,9 @@ def setup():
     return manager, consumer
 
 
-# ------------------------------------------------------------------ #
+
 # Basic verification
-# ------------------------------------------------------------------ #
+
 
 class TestBasicVerification:
     def test_active_identity_returns_valid(self, setup):
@@ -73,9 +73,9 @@ class TestBasicVerification:
         assert "VERIFY_BASIC" in actions
 
 
-# ------------------------------------------------------------------ #
+
 # Tax authority verification
-# ------------------------------------------------------------------ #
+
 
 class TestTaxVerification:
     def test_clean_active_identity_is_eligible(self, setup):
@@ -117,9 +117,9 @@ class TestTaxVerification:
                                  datetime.now(timezone.utc) - timedelta(days=30),  datetime.now(timezone.utc))
 
 
-# ------------------------------------------------------------------ #
+
 # Driving licence verification
-# ------------------------------------------------------------------ #
+
 
 class TestDrivingLicenceVerification:
     def test_active_identity_no_restriction_is_eligible(self, setup):
