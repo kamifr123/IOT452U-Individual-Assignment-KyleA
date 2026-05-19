@@ -45,3 +45,12 @@ capability boundary required by the system. Three verification types are support
 - Basic (employers, banks): returns valid/not valid only, no additional attributes exposed
 - Tax authority: confirms identity is active and was not suspended during a reporting period
 - Driving licence: confirms identity is active and has no temporary restriction in place
+
+## Running the Tests
+
+pip3 install pytest
+pytest tests/ -v
+
+33 unit tests cover identity creation, duplicate rejection, immutable field enforcement,
+status transitions, idempotency, authorisation enforcement, and all three verification types.
+
